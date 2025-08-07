@@ -2,6 +2,16 @@
 
 ### Find any bit that you remember
 
+## Setup 
+
+`cd` into backend and run:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
 ## Setup
 
 - Postgresql database stored on Oracle Server

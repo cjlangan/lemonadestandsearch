@@ -1,0 +1,46 @@
+{
+    "kind": "youtube#searchListResponse",
+    "etag": "QI2TzL_vMQEx3OgBltMgE0HgGK0",
+    "nextPageToken": "CAEQAA",
+    "regionCode": "CA",
+    "pageInfo": {
+        "totalResults": 42,
+        "resultsPerPage": 1
+    },
+    "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "lk6lgvzxm9SoqZWqlBxRbRmFI0g",
+            "id": {
+                "kind": "youtube#video",
+                "videoId": "A2HOczg0Qnw"
+            },
+            "snippet": {
+                "publishedAt": "2025-08-06T19:03:22Z",
+                "channelId": "UCwVevVbti5Uuxj6Mkl5NHRA",
+                "title": "We&#39;re Looking For Work | Lemonade Stand \ud83c\udf4b",
+                "description": "On this week's show... Atrioc investigates some numbers, Aiden asks about jobs, and DougDoug invests for the memes.",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/A2HOczg0Qnw/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/A2HOczg0Qnw/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/A2HOczg0Qnw/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Lemonade Stand",
+                "liveBroadcastContent": "none",
+                "publishTime": "2025-08-06T19:03:22Z"
+            }
+        }
+    ]
+}
