@@ -1,2 +1,4 @@
 webvtt-py
 requests
+psycopg2
+dotenv
