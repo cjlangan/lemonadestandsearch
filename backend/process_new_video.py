@@ -23,13 +23,6 @@ def main():
     DB_USER = os.getenv('DB_USER')
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
-    if GOOGLE_API_KEY is None:
-        raise Exception("ERROR: Could not find GOOGLE_API_KEY in .env")
-    if DB_NAME is None:
-        raise Exception("ERROR: Could not find DB_NAME in .env")
-    if DB_USER is None:
-        raise Exception("ERROR: Could not find DB_USER in .env")
-
     url = BASE_URL.format(key=GOOGLE_API_KEY, id=LEMONADE_STAND_ID)
 
     # output = rq.get(url)
