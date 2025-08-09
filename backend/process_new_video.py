@@ -45,10 +45,6 @@ def main():
     # channel_name = data["snippet"]["channelTitle"]
     date = publish_time[:10]
 
-    print(f"Found Video Title: {title}")
-    print(f"Found Video Date: {date}")
-    print(f"Found Video ID: {video_id}")
-
     # with open("sample.json", "w") as file:
     #     json.dump(output.json(), file, indent = 4)
 
@@ -75,11 +71,38 @@ def main():
         id SERIAL PRIMARY KEY,
         vid_id INTEGER REFERENCES videos(id),
         time INT,
-        text TEXT
+        text TEXT,
+        search_vector tsvector
     );
     """)
-    cur.execute("""DELETE FROM videos""")
-    cur.execute("""DELETE FROM captions""")
+
+    # Updates a search vector to match text quicker for faster searching
+    cur.execute("""CREATE OR REPLACE FUNCTION caption_search_vector_update() RETURNS trigger AS $$
+    BEGIN
+        NEW.search_vector := to_tsvector('english', COALESCE(NEW.text, ''));
+        RETURN NEW;
+    END
+    $$ LANGUAGE plpgsql;
+    """)
+
+    # Apply autotrigger to any change made to the captions table
+    cur.execute("""
+        DROP TRIGGER IF EXISTS caption_search_vector_update_trigger ON captions;
+        CREATE TRIGGER caption_search_vector_update_trigger
+        BEFORE INSERT OR UPDATE ON captions
+        FOR EACH ROW EXECUTE FUNCTION caption_search_vector_update();
+    """)
+
+    # Add index to captions for faster queries via GIN 
+    cur.execute("""
+        CREATE INDEX IF NOT EXISTS caption_search_idx ON captions USING GIN (search_vector);
+    """)
+
+    # Add indicies to upload dates for binary tree search improvemnts for date ranges
+    cur.execute("CREATE INDEX IF NOT EXISTS videos_upload_date_idx ON videos (upload_date);")
+
+    cur.execute("DELETE FROM captions")
+    cur.execute("DELETE FROM videos")
 
     cur.execute("""INSERT INTO videos (video_id, title, upload_date, premium) VALUES
         (%s, %s, %s, %s)
@@ -97,14 +120,12 @@ def main():
     cur.close()
     conn.close()
 
-# Then, you would create a Full-Text Search index on the captions.text column.
-
 def time_str_to_seconds(time_str):
     """
-    Convert a time string "HH:MM:SS.mmm" to total seconds as a float.
+    Convert a time string "HH:MM:SS.mmm" to total seconds.
     
     Example:
-        "01:49:53.280" -> 6593.28 seconds
+        "01:49:53.280" -> 6593 seconds
     """
     parts = time_str.split(':')
     if len(parts) != 3:
@@ -112,7 +133,7 @@ def time_str_to_seconds(time_str):
 
     hours = int(parts[0])
     minutes = int(parts[1])
-    seconds = float(parts[2])  # includes fractional seconds
+    seconds = int(parts[2].split('.')[0])
 
     total_seconds = hours * 3600 + minutes * 60 + seconds
     return total_seconds
