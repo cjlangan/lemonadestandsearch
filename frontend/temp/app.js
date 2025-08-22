@@ -3,3 +3,5 @@
 
 // EXAMPLE ON HOW TO LINK TO VIDEO AT SPECIFC TIME
 // https://www.youtube.com/watch?v=A2HOczg0Qnw&t=74s
+
+console.log("Hello, world!")
