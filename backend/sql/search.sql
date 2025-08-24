@@ -1,4 +1,5 @@
 SELECT
+    c.id,
     v.video_id,
     v.title,
     TO_CHAR(v.upload_date, 'YYYY-MM-DD') AS upload_date,

@@ -1,6 +1,7 @@
 import { parseISO, format } from 'date-fns';
 
 export type CardProps = {
+    key: number;
     imageUrl: string;
     title: string;
     text: string; // contains <b>...<b>

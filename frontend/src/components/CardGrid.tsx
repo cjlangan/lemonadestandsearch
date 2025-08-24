@@ -1,5 +1,5 @@
 import Card from "./Card";
-import type { SearchResult } from "./types";
+import type { SearchResult } from "../types/SearchResult";
 
 type CardGridProps = {
     allResults: SearchResult[];
@@ -10,6 +10,7 @@ function CardGrid({ allResults }: CardGridProps){
         <div className="flex flex-wrap gap-4 p-4 justify-start max-w-5xl mx-auto">
             {allResults.map(item => (
                 <Card
+                    key = {item.id}
                     imageUrl = {getImageUrl(item.video_id)}
                     title = {item.title}
                     text = {item.hl_text}

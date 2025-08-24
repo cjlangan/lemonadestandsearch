@@ -1,4 +1,5 @@
 export interface SearchResult {
+    id: number; // unique identifier
     hl_text: string; // contains <b>...<b>
     time: number; // seconds
     title: string;
