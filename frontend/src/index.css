@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
