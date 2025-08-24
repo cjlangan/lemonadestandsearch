@@ -12,7 +12,7 @@ function SearchBar({ query, setQuery, handleSubmit }: SearchBarProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="e.g. 'Horse Electrolytes', 'Gavin Newsom', ..."
-                className="border-2 bg-white w-200 border-gray-300 p-6 rounded-full w-96 text-2xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="shadow-md border-2 bg-white w-200 border-gray-300 p-6 rounded-full w-96 text-2xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
         </form>
     );

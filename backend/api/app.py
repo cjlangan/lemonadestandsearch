@@ -29,7 +29,7 @@ def search():
     q = request.args.get("q", "").strip()
     start_date = request.args.get("start")
     end_date = request.args.get("end")
-    order = request.args.get("order", "none").lower()
+    order = request.args.get("order", "best").lower()
 
     if not q:
         return jsonify({"error": "Missing query parameter 'q'"}), 400
@@ -38,12 +38,14 @@ def search():
     if not end_date:
         return jsonify({"error": "Missing parameter 'end_date'"}), 400
     if order not in [o.value for o in Order]:
-        return jsonify({"error": f"Invalid order. Must be one of {[o.value for o in Order]}"}), 400
+        order = "best";
 
     if order == "asc":
         order_sql = "ORDER BY v.upload_date ASC"
     elif order == "desc":
         order_sql = "ORDER BY v.upload_date DESC"
+    elif order == "best":
+        order_sql = "ORDER BY ts_rank(c.search_vector, plainto_tsquery('english', %s)) DESC"
     else:
         order_sql = ""
 
@@ -53,7 +55,10 @@ def search():
 
     with get_connection() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            cur.execute(sql, (q, q, start_date, end_date))
+            params = [q, q, start_date, end_date]  # default for asc/desc
+            if order == "best":
+                params.append(q)
+            cur.execute(sql, params)
             results = cur.fetchall()
 
     return jsonify(results), 200

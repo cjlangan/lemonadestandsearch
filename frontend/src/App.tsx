@@ -1,15 +1,19 @@
 import { useState } from "react";
-import DatePicker from "react-date-picker";
-import 'react-date-picker/dist/DatePicker.css';
-import 'react-calendar/dist/Calendar.css';
 
 import Header from "./components/Header"
+import SortSelect from "./components/SortSelect"
 import SearchBar from "./components/SearchBar"
+import MyDatePicker from "./components/MyDatePicker"
 import CardGrid from "./components/CardGrid"
 
 import type { SearchResult } from "./types/SearchResult";
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import type { Value, OptionType } from "./types/SmallTypes";
+
+const options = [
+    { value: "best", label: "Best Match" },
+    { value: "asc", label: "Ascending" },
+    { value: "desc", label: "Descending" },
+];
 
 function App() {
 
@@ -17,6 +21,7 @@ function App() {
     const [query, setQuery] = useState<string>("");
     const [startDate, setStartDate] = useState<Value>(new Date("2024-01-02"));
     const [endDate, setEndDate] = useState<Value>(new Date());
+    const [order, setOrder] = useState<OptionType>(options[0]);
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault(); // prevent page reload
@@ -39,7 +44,7 @@ function App() {
             q: query,
             start: start,
             end: end,
-            order: "asc",
+            order: order.value,
         });
 
         fetch(`http://127.0.0.1:5000/api/search?${params.toString()}`)
@@ -59,46 +64,24 @@ function App() {
     }
 
     return (
-        <div className="min-h-screen bg-yellow-100 flex flex-col items-center">
-          {/* Spacer for vertical centering */}
-          <div
-            className="transition-all duration-700 ease-out"
-            style={{ height: data.length === 0 ? '50vh' : '20px' }}
-          />
-          <Header />
-          <div className="flex gap-6 items-start w-full max-w-5xl justify-center mt-4">
-            <div className="flex-1">
-              <SearchBar query={query} setQuery={setQuery} handleSubmit={handleSubmit} />
-            </div>
-            {/* Date pickers */}
-            <div className="flex gap-4">
-              <div className="flex flex-col">
-                <label className="mb-1 text-gray-700 font-medium">Start Date</label>
-                <div className="p-3 bg-white rounded-2xl shadow-md w-64">
-                  <DatePicker
-                    onChange={setStartDate}
-                    value={startDate}
-                    closeCalendar={false}
-                    className="w-full text-lg font-medium"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <label className="mb-1 text-gray-700 font-medium">End Date</label>
-                <div className="p-3 bg-white rounded-2xl shadow-md w-64">
-                  <DatePicker
-                    onChange={setEndDate}
-                    value={endDate}
-                    closeCalendar={false}
-                    className="w-full text-lg font-medium"
-                  />
-                </div>
-              </div>
+      <div className="min-h-screen bg-yellow-100 flex flex-col items-center">
+        {/* Spacer for vertical centering */}
+        <div
+          className="transition-all duration-700 ease-out"
+          style={{ height: data.length === 0 ? '35vh' : '20px' }}
+        />
+        <Header />
+          <div className="flex flex-col items-center gap-4 w-full max-w-5xl mt-4">
+            <SearchBar query={query} setQuery={setQuery} handleSubmit={handleSubmit} />
+            <div className="flex gap-4 justify-center w-full">
+              <SortSelect order={order} setOrder={setOrder} options={options} />
+              <MyDatePicker date={startDate} setDate={setStartDate} title="Start Date" />
+              <MyDatePicker date={endDate} setDate={setEndDate} title="End Date" />
             </div>
           </div>
-          <CardGrid allResults={data} />
-        </div>
-    )
+        <CardGrid allResults={data} />
+      </div>
+    );
 }
 
-export default App
+export default App;
