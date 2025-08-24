@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
@@ -9,6 +10,7 @@ import os
 SQL_DIR = "../sql"
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:5173", "http://127.0.0.1:5173"])
 
 class Order(Enum):
     ASC = "asc"

@@ -1,11 +1,22 @@
-import Header from "./Header";
-import SearchBar from "./SearchBar";
+import { useState } from "react";
 
-export default function App() {
+import Header from "./Header"
+import SearchBar from "./SearchBar"
+import CardGrid from "./CardGrid"
+
+import type { SearchResult } from "./types";
+
+function App() {
+
+    const [data, setData] = useState<SearchResult[]>([]);
+
     return (
-        <div className="min-h-screen w-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+        <div className="min-h-screen bg-yellow-100 flex-col items-center justify-center">
             <Header />
-            <SearchBar />
+            <SearchBar setData={setData}/>
+            <CardGrid allResults={data}/>
         </div>
-    );
+    )
 }
+
+export default App
