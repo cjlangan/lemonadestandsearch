@@ -57,14 +57,24 @@ npm run dev
 - [x] Pythons Flask as a backend API to interact with the database
 - [x] HTML and Javascript frontend that uses the API to search for bits
 - [x] Write frontend to render all components
-- [ ] Add date range and order options (state held in App.tsx)
-- [ ] Render on every key stroke
-- [ ] Make it all look nice (UI/UX Time!)
+- [x] Add date range and order options (state held in App.tsx)
+- [x] Make it all look nice (UI/UX Time!)
+    - [x] Header needs work
+    - [x] Ensure search bar isn't too big for mobile
+    - [x] Render cards in grid formation better
+
+- [ ] Fetch on every word or chunk of time, and date and order changes
 - [ ] Secure the database by only allowing requests from the frontend
+- [ ] Title/Icon
 - [ ] Setup a webhook to download new captions on video publish (not shorts)
+    - [ ] Check if the video is already there before adding
 - [ ] Set up code on Oracle Server
-- [ ] Set up domain with NGINX, gotta buy
+- [ ] Populate database with all current videos
+- [ ] Set up domain with NGINX, should buy
 - [ ] Get project working with new domains
 - [ ] Rigorous testing
 - [ ] Reddit Post
+
+
+
 

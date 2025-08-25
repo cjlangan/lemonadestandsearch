@@ -15,10 +15,10 @@ function Card({ imageUrl, title, text, watchUrl, date }: CardProps) {
     const highlightedText = text.replace(/<b>(.*?)<\/b>/g, '<span class="bg-white text-black">$1</span>');
 
   return (
-    <a href={watchUrl} className="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-gray-800" target="_blank" rel="noopener noreferrer">
-      <img className="w-full h-48 object-cover" src={imageUrl} alt={title} />
+    <a href={watchUrl} className="max-w-xs rounded-2xl overflow-hidden shadow-lg dark:bg-gray-800" target="_blank" rel="noopener noreferrer">
+      <img className="w-full h-40 object-cover" src={imageUrl} alt={title} />
       <div className="p-4">
-        <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+        <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
           {title}
         </h2>
         <p className="text-gray-700 dark:text-gray-300 text-sm"

@@ -47,7 +47,7 @@ function App() {
             order: order.value,
         });
 
-        fetch(`http://127.0.0.1:5000/api/search?${params.toString()}`)
+        fetch(`http://192.168.0.107:5000/api/search?${params.toString()}`)
             .then((res) => {
                 if(!res.ok) {
                     throw new Error("Network response was not ok");
@@ -67,13 +67,21 @@ function App() {
       <div className="min-h-screen bg-yellow-100 flex flex-col items-center">
         {/* Spacer for vertical centering */}
         <div
-          className="transition-all duration-700 ease-out"
-          style={{ height: data.length === 0 ? '35vh' : '20px' }}
+          className="transition-all duration-700 ease-out mt-12 w-full"
+          style={{
+            height:
+              data.length === 0
+                ? window.innerWidth < 640
+                  ? '0px'      // shrink to 0 on small screens
+                  : '20vh'     // normal height on larger screens
+                : '20px',       // when data exists
+          }}
         />
+
         <Header />
           <div className="flex flex-col items-center gap-4 w-full max-w-5xl mt-4">
             <SearchBar query={query} setQuery={setQuery} handleSubmit={handleSubmit} />
-            <div className="flex gap-4 justify-center w-full">
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
               <SortSelect order={order} setOrder={setOrder} options={options} />
               <MyDatePicker date={startDate} setDate={setStartDate} title="Start Date" />
               <MyDatePicker date={endDate} setDate={setEndDate} title="End Date" />
