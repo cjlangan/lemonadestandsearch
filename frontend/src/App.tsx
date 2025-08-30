@@ -9,6 +9,8 @@ import CardGrid from "./components/CardGrid"
 import type { SearchResult } from "./types/SearchResult";
 import type { Value, OptionType } from "./types/SmallTypes";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const options = [
     { value: "best", label: "Best Match" },
     { value: "asc", label: "Ascending" },
@@ -23,8 +25,7 @@ function App() {
     const [endDate, setEndDate] = useState<Value>(new Date());
     const [order, setOrder] = useState<OptionType>(options[0]);
 
-    function handleSubmit(e: React.FormEvent) {
-        e.preventDefault(); // prevent page reload
+    function handleSubmit(query: string) {
         console.log("Searching for:", query);
 
         let start = ""
@@ -47,7 +48,7 @@ function App() {
             order: order.value,
         });
 
-        fetch(`http://192.168.0.107:5000/api/search?${params.toString()}`)
+        fetch(`${apiBaseUrl}/search?${params.toString()}`)
             .then((res) => {
                 if(!res.ok) {
                     throw new Error("Network response was not ok");
@@ -82,9 +83,9 @@ function App() {
           <div className="flex flex-col items-center gap-4 w-full max-w-5xl mt-4">
             <SearchBar query={query} setQuery={setQuery} handleSubmit={handleSubmit} />
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
-              <SortSelect order={order} setOrder={setOrder} options={options} />
-              <MyDatePicker date={startDate} setDate={setStartDate} title="Start Date" />
-              <MyDatePicker date={endDate} setDate={setEndDate} title="End Date" />
+              <SortSelect order={order} setOrder={setOrder} options={options} query= {query} handleSubmit={handleSubmit}/>
+              <MyDatePicker date={startDate} setDate={setStartDate} title="Start Date" query={query} handleSubmit={handleSubmit} />
+              <MyDatePicker date={endDate} setDate={setEndDate} title="End Date" query={query} handleSubmit={handleSubmit} />
             </div>
           </div>
         <CardGrid allResults={data} />

@@ -6,9 +6,11 @@ type SortSelectProps = {
     order: OptionType | null;
     setOrder: (option: OptionType) => void;
     options: OptionType[];
+    query: string;
+    handleSubmit: (query: string) => void;
 }
 
-function SortSelect({ order, setOrder, options }: SortSelectProps) {
+function SortSelect({ order, setOrder, options, query, handleSubmit }: SortSelectProps) {
     return (
     <div className="flex flex-col min-w-0 w-[min(12rem,100%)]">
       <label className="mb-1 text-gray-700 font-medium">Sort By</label>
@@ -16,7 +18,10 @@ function SortSelect({ order, setOrder, options }: SortSelectProps) {
       <div className="p-2 bg-white rounded-2xl shadow-md min-w-0">
         <Select
           value={order}
-          onChange={(option) => setOrder(option as OptionType)}
+          onChange={(option) => {
+              setOrder(option as OptionType);
+              handleSubmit(query);
+          }}
           options={options}
           isSearchable={false}
           closeMenuOnSelect

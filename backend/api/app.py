@@ -5,12 +5,14 @@ import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 from enum import Enum
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 SQL_DIR = "../sql"
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://192.168.0.107:5173"])
+CORS(app, origins=["http://frontend:80", "http://localhost:3000"])
 
 class Order(Enum):
     ASC = "asc"
@@ -21,6 +23,9 @@ def get_connection():
     return psycopg2.connect(
         database=os.getenv('DB_NAME'),
         user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        host=os.getenv('DB_HOST', 'localhost'),  # fallback to localhost
+        port=int(os.getenv('DB_PORT', 5432)),   # fallback to 5432
         cursor_factory=RealDictCursor
     )
 
@@ -38,7 +43,7 @@ def search():
     if not end_date:
         return jsonify({"error": "Missing parameter 'end_date'"}), 400
     if order not in [o.value for o in Order]:
-        order = "best";
+        order = "best"
 
     if order == "asc":
         order_sql = "ORDER BY v.upload_date ASC"
@@ -54,7 +59,7 @@ def search():
         sql = f.read().format(order_sql=order_sql)
 
     with get_connection() as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+        with conn.cursor() as cur:
             params = [q, q, start_date, end_date]  # default for asc/desc
             if order == "best":
                 params.append(q)

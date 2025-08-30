@@ -48,6 +48,22 @@ npm install
 npm run dev
 ```
 
+## Hooking up on Oracle:
+
+b) Separate ports internally
+
+Keep backend running on localhost (e.g., localhost:5000) and frontend on another port (e.g., localhost:3000).
+On production, use a reverse proxy like Nginx or Caddy:
+
+    myapp.com        -> frontend
+    myapp.com/api    -> reverse proxy -> localhost:5000
+
+To the outside world, everything is under myapp.com.
+Backend stays “localhost” internally, frontend is public.
+The domain should point to the frontend, yes.
+Backend can stay on localhost internally.
+Use a reverse proxy to route /api requests to the backend.
+This is the standard professional approach: backend never directly exposed to the internet by port; it’s proxied through the domain.
 
 ## TODO
 
@@ -62,19 +78,23 @@ npm run dev
     - [x] Header needs work
     - [x] Ensure search bar isn't too big for mobile
     - [x] Render cards in grid formation better
+- [x] Fetch on every word or chunk of time, and date and order changes
+- [x] Title/Icon
 
-- [ ] Fetch on every word or chunk of time, and date and order changes
-- [ ] Secure the database by only allowing requests from the frontend
-- [ ] Title/Icon
+- [x] Hide routes using env
 - [ ] Setup a webhook to download new captions on video publish (not shorts)
     - [ ] Check if the video is already there before adding
+- [ ] Change background to image and change font
+
+## Production TODO:
+
+- [ ] Set up Docker for simplicity
 - [ ] Set up code on Oracle Server
 - [ ] Populate database with all current videos
 - [ ] Set up domain with NGINX, should buy
+- [ ] Secure the database by only allowing requests from the frontend, do later
 - [ ] Get project working with new domains
 - [ ] Rigorous testing
 - [ ] Reddit Post
-
-
 
 

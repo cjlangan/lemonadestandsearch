@@ -7,6 +7,8 @@ import tempfile
 import glob
 import webvtt
 import psycopg2
+from pathlib import Path
+from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 
 LEMONADE_STAND_ID = "UCwVevVbti5Uuxj6Mkl5NHRA"
@@ -19,8 +21,12 @@ VID_URL = "https://www.youtube.com/watch?v={vid_id}"
 
 def main():
     load_dotenv()
+
     DB_NAME = os.getenv('DB_NAME')
     DB_USER = os.getenv('DB_USER')
+    DB_PASSWORD = os.getenv('DB_PASSWORD')
+    DB_HOST = os.getenv('DB_HOST', 'localhost')  # fallback to localhost
+    DB_PORT = int(os.getenv('DB_PORT', 5432))    # fallback to 5432
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
     url = BASE_URL.format(key=GOOGLE_API_KEY, id=LEMONADE_STAND_ID)
@@ -28,7 +34,9 @@ def main():
     # output = rq.get(url)
     # data = output.json()["items"][0]
 
-    with open("sample.json") as f:
+    BASE_DIR = Path(__file__).parent
+    json_path = BASE_DIR / "sample.json"
+    with open(json_path) as f:
         raw = json.load(f)
 
     data = raw["items"][0]
@@ -44,12 +52,20 @@ def main():
     video_url = VID_URL.format(vid_id=video_id)
     # vtt = get_subtitles(video_url)
 
-    with open("sample.vtt") as f:
+    vtt_path = BASE_DIR / "sample.vtt"
+    with open(vtt_path) as f:
         vtt = f.read()
 
     snippets = parse_vtt(vtt)
 
-    conn = psycopg2.connect(database=DB_NAME, user=DB_USER)
+    conn = psycopg2.connect(
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        host=DB_HOST,
+        port=DB_PORT,
+        cursor_factory=RealDictCursor
+    )
     cur = conn.cursor()
 
     cur.execute("""INSERT INTO videos (video_id, title, upload_date, premium) VALUES
@@ -57,7 +73,8 @@ def main():
         RETURNING id
     """, (video_id, title, date, False))
 
-    video_db_id = cur.fetchone()[0]  # This is the new row's id
+    row = cur.fetchone()  
+    video_db_id = row['id']
 
     for snippet in snippets:
         cur.execute("""insert into captions (vid_id, time, text) values
