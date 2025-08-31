@@ -11,7 +11,7 @@ SQL_DIR = "../sql"
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://frontend:80", "http://localhost:3000"])
+CORS(app, origins=["http://localhost:5173", "http://127.0.0.1:5173"])
 
 class Order(Enum):
     ASC = "asc"
@@ -23,8 +23,6 @@ def get_connection():
         database=os.getenv('DB_NAME'),
         user=os.getenv('DB_USER'),
         password=os.getenv('DB_PASSWORD'),
-        host=os.getenv('DB_HOST', 'localhost'),  # fallback to localhost
-        port=int(os.getenv('DB_PORT', 5432)),   # fallback to 5432
         cursor_factory=RealDictCursor
     )
 

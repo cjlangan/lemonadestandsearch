@@ -1,7 +1,6 @@
 webvtt-py
 requests
-psycopg2-binary
-# psycopg2
+psycopg2
 dotenv
 Flask
 flask-cors

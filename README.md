@@ -6,6 +6,15 @@
 
 # Development
 
+## General
+
+- Create a Google API Key
+- Create a PostgreSQL database and store info in .env
+
+```bash
+systemctl start postgresql
+```
+
 ## Backend
 
 `cd` into backend and run:
@@ -82,13 +91,17 @@ This is the standard professional approach: backend never directly exposed to th
 - [x] Title/Icon
 
 - [x] Hide routes using env
-- [ ] Setup a webhook to download new captions on video publish (not shorts)
-    - [ ] Check if the video is already there before adding
+- [-] Setup a webhook to download new captions on video publish (not shorts)
+    - [x] Check if the video is already there before adding
+    - [x] Went with polling approach, much simpler
+- [ ] Fix order selector submitting on previous input
 - [ ] Change background to image and change font
+- [ ] Get colour palette from logo
 
 ## Production TODO:
 
-- [x] Set up Docker for simplicity (was more complex acchooally)
+- [-] Set up Docker for simplicity (was more complex acchooally)
+    - [x] Remove docker
 - [ ] Set up code on Oracle Server
 - [ ] Populate database with all current videos
 - [ ] Set up domain with NGINX, should buy

@@ -25,8 +25,6 @@ def main():
     DB_NAME = os.getenv('DB_NAME')
     DB_USER = os.getenv('DB_USER')
     DB_PASSWORD = os.getenv('DB_PASSWORD')
-    DB_HOST = os.getenv('DB_HOST', 'localhost')  # fallback to localhost
-    DB_PORT = int(os.getenv('DB_PORT', 5432))    # fallback to 5432
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
     url = BASE_URL.format(key=GOOGLE_API_KEY, id=LEMONADE_STAND_ID)
@@ -45,24 +43,10 @@ def main():
     publish_time = data["snippet"]["publishTime"]
     date = publish_time[:10]
 
-    # with open("sample.json", "w") as file:
-    #     json.dump(output.json(), file, indent = 4)
-
-    video_url = VID_URL.format(vid_id=video_id)
-    vtt = get_subtitles(video_url)
-
-    # vtt_path = BASE_DIR / "sample.vtt"
-    # with open(vtt_path) as f:
-    #     vtt = f.read()
-
-    snippets = parse_vtt(vtt)
-
     conn = psycopg2.connect(
         database=DB_NAME,
         user=DB_USER,
         password=DB_PASSWORD,
-        host=DB_HOST,
-        port=DB_PORT,
         cursor_factory=RealDictCursor
     )
     cur = conn.cursor()
@@ -75,6 +59,19 @@ def main():
         cur.close()
         conn.close()
         return  # exit early
+
+    # with open("sample.json", "w") as file:
+    #     json.dump(output.json(), file, indent = 4)
+
+    video_url = VID_URL.format(vid_id=video_id)
+    vtt = get_subtitles(video_url)
+
+    # vtt_path = BASE_DIR / "sample.vtt"
+    # with open(vtt_path) as f:
+    #     vtt = f.read()
+
+    snippets = parse_vtt(vtt)
+
 
     # Process new video
     cur.execute("""INSERT INTO videos (video_id, title, upload_date, premium) VALUES
