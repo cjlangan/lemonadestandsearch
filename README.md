@@ -94,7 +94,7 @@ This is the standard professional approach: backend never directly exposed to th
 - [-] Setup a webhook to download new captions on video publish (not shorts)
     - [x] Check if the video is already there before adding
     - [x] Went with polling approach, much simpler
-- [ ] Fix order selector submitting on previous input
+- [x] Fix order selector submitting on previous input
 - [ ] Change background to image and change font
 - [ ] Get colour palette from logo
 

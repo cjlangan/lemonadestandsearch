@@ -8,11 +8,9 @@ type MyDatePickerProps = {
     date: Value;
     setDate: (d: Value) => void;
     title: string;
-    query: string;
-    handleSubmit: (query: string) => void;
 }
 
-function MyDatePicker({ date, setDate, title, query, handleSubmit }: MyDatePickerProps) {
+function MyDatePicker({ date, setDate, title }: MyDatePickerProps) {
     return (
         <div className="flex flex-col min-w-0 w-[min(12rem,100%)]">
           <label className="mb-1 text-gray-700 font-medium">{title}</label>
@@ -21,7 +19,6 @@ function MyDatePicker({ date, setDate, title, query, handleSubmit }: MyDatePicke
             <DatePicker
               onChange={(newDate) => {
                   setDate(newDate);
-                  handleSubmit(query);
               }}
               value={date}
               closeCalendar={false}

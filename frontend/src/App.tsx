@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Header from "./components/Header"
 import SortSelect from "./components/SortSelect"
@@ -13,8 +13,8 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const options = [
     { value: "best", label: "Best Match" },
-    { value: "asc", label: "Ascending" },
-    { value: "desc", label: "Descending" },
+    { value: "asc", label: "Newest First" },
+    { value: "desc", label: "Oldest First" },
 ];
 
 function App() {
@@ -24,6 +24,12 @@ function App() {
     const [startDate, setStartDate] = useState<Value>(new Date("2024-01-02"));
     const [endDate, setEndDate] = useState<Value>(new Date());
     const [order, setOrder] = useState<OptionType>(options[0]);
+
+    useEffect(() => {
+        if (order !== undefined && startDate !== undefined && endDate !== undefined) {
+            handleSubmit(query);
+        }
+    }, [order, startDate, endDate]);
 
     function handleSubmit(query: string) {
         console.log("Searching for:", query);
@@ -40,6 +46,7 @@ function App() {
 
         console.log("Start date:", start);
         console.log("End date:", end);
+        console.log("Order:", order.value);
 
         const params = new URLSearchParams({
             q: query,
@@ -83,9 +90,9 @@ function App() {
           <div className="flex flex-col items-center gap-4 w-full max-w-5xl mt-4">
             <SearchBar query={query} setQuery={setQuery} handleSubmit={handleSubmit} />
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
-              <SortSelect order={order} setOrder={setOrder} options={options} query= {query} handleSubmit={handleSubmit}/>
-              <MyDatePicker date={startDate} setDate={setStartDate} title="Start Date" query={query} handleSubmit={handleSubmit} />
-              <MyDatePicker date={endDate} setDate={setEndDate} title="End Date" query={query} handleSubmit={handleSubmit} />
+              <SortSelect order={order} setOrder={setOrder} options={options} />
+              <MyDatePicker date={startDate} setDate={setStartDate} title="Start Date" />
+              <MyDatePicker date={endDate} setDate={setEndDate} title="End Date" />
             </div>
           </div>
         <CardGrid allResults={data} />
