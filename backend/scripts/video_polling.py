@@ -31,30 +31,29 @@ def main():
 
     url = BASE_URL.format(key=GOOGLE_API_KEY, id=LEMONADE_STAND_ID)
 
-    # output = rq.get(url)
-    # data = output.json()["items"][0]
+    output = rq.get(url)
+    data = output.json()["items"][0]
 
-    BASE_DIR = Path(__file__).parent
-    json_path = BASE_DIR / "sample.json"
-    with open(json_path) as f:
-        raw = json.load(f)
+    # BASE_DIR = Path(__file__).parent
+    # json_path = BASE_DIR / "sample.json"
+    # with open(json_path) as f:
+    #     raw = json.load(f)
+    # data = raw["items"][0]
 
-    data = raw["items"][0]
     video_id = data["id"]["videoId"]
     title = html.unescape(data["snippet"]["title"])
     publish_time = data["snippet"]["publishTime"]
-    # channel_name = data["snippet"]["channelTitle"]
     date = publish_time[:10]
 
     # with open("sample.json", "w") as file:
     #     json.dump(output.json(), file, indent = 4)
 
     video_url = VID_URL.format(vid_id=video_id)
-    # vtt = get_subtitles(video_url)
+    vtt = get_subtitles(video_url)
 
-    vtt_path = BASE_DIR / "sample.vtt"
-    with open(vtt_path) as f:
-        vtt = f.read()
+    # vtt_path = BASE_DIR / "sample.vtt"
+    # with open(vtt_path) as f:
+    #     vtt = f.read()
 
     snippets = parse_vtt(vtt)
 
@@ -68,6 +67,16 @@ def main():
     )
     cur = conn.cursor()
 
+    # Check if video has already been processed
+    cur.execute("SELECT id FROM videos WHERE video_id = %s", (video_id,))
+    row = cur.fetchone()
+    if row:
+        print(f"Video {video_id} already in DB, skipping")
+        cur.close()
+        conn.close()
+        return  # exit early
+
+    # Process new video
     cur.execute("""INSERT INTO videos (video_id, title, upload_date, premium) VALUES
         (%s, %s, %s, %s)
         RETURNING id

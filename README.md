@@ -88,7 +88,7 @@ This is the standard professional approach: backend never directly exposed to th
 
 ## Production TODO:
 
-- [ ] Set up Docker for simplicity
+- [x] Set up Docker for simplicity (was more complex acchooally)
 - [ ] Set up code on Oracle Server
 - [ ] Populate database with all current videos
 - [ ] Set up domain with NGINX, should buy

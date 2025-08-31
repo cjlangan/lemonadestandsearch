@@ -54,5 +54,26 @@ services:
       db:
         condition: service_healthy
 
+  yt-polling:
+    build: ./backend
+    container_name: lemon-yt-polling
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 5432
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/scripts:/app/scripts
+    command: >
+      sh -c "while true; do
+                python /app/scripts/video_polling.py;
+                sleep 3600;
+            done"
+
 volumes:
   pgdata:

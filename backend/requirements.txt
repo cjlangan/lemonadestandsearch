@@ -1,6 +1,9 @@
 webvtt-py
 requests
 psycopg2-binary
+# psycopg2
 dotenv
 Flask
 flask-cors
+google-api-python-client
+yt-dlp
