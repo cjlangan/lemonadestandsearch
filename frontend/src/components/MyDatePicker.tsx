@@ -13,9 +13,9 @@ type MyDatePickerProps = {
 function MyDatePicker({ date, setDate, title }: MyDatePickerProps) {
     return (
         <div className="flex flex-col min-w-0 w-[min(12rem,100%)]">
-          <label className="mb-1 text-gray-700 font-medium">{title}</label>
+          <label className="mb-1 dark:text-gray-100 font-medium">{title}</label>
 
-          <div className="p-3 bg-white rounded-2xl shadow-md min-w-0">
+          <div className="p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md min-w-0">
             <DatePicker
               onChange={(newDate) => {
                   setDate(newDate);

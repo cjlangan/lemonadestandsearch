@@ -95,8 +95,7 @@ This is the standard professional approach: backend never directly exposed to th
     - [x] Check if the video is already there before adding
     - [x] Went with polling approach, much simpler
 - [x] Fix order selector submitting on previous input
-- [ ] Change background to image and change font
-- [ ] Get colour palette from logo
+- [x] Get colour palette from logo
 
 ## Production TODO:
 
@@ -111,3 +110,6 @@ This is the standard professional approach: backend never directly exposed to th
 - [ ] Reddit Post
 
 
+## Eventually 
+
+- [ ] Dark theme

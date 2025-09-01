@@ -1,5 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import "tailwindcss";
 
 .react-date-picker__wrapper {
-  border: none !important;
+    border: none !important;
 }
+
+@theme {
+    --font-sans: "Rubik", sans-serif;
+    --color-light-yellow: #FEF9C3ff;
+    --color-dark-yellow: #F9D232ff;
+    --color-light-brown: #84593Cff;
+    --color-dark-brown: #563320ff;
+    --color-green: #008B4Dff;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+

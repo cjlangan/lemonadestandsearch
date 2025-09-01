@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
-import Header from "./components/Header"
+import Title from "./components/Title"
 import SortSelect from "./components/SortSelect"
 import SearchBar from "./components/SearchBar"
 import MyDatePicker from "./components/MyDatePicker"
 import CardGrid from "./components/CardGrid"
+import ThemeToggle from "./components/ThemeToggle.tsx"
+
 
 import type { SearchResult } from "./types/SearchResult";
 import type { Value, OptionType } from "./types/SmallTypes";
@@ -26,7 +28,7 @@ function App() {
     const [order, setOrder] = useState<OptionType>(options[0]);
 
     useEffect(() => {
-        if (order !== undefined && startDate !== undefined && endDate !== undefined) {
+        if (query !== "") {
             handleSubmit(query);
         }
     }, [order, startDate, endDate]);
@@ -72,7 +74,8 @@ function App() {
     }
 
     return (
-      <div className="min-h-screen bg-yellow-100 flex flex-col items-center">
+      <div className="min-h-screen bg-light-yellow dark:bg-dark-brown flex flex-col items-center">
+
         {/* Spacer for vertical centering */}
         <div
           className="transition-all duration-700 ease-out mt-12 w-full"
@@ -86,7 +89,7 @@ function App() {
           }}
         />
 
-        <Header />
+        <Title />
           <div className="flex flex-col items-center gap-4 w-full max-w-5xl mt-4">
             <SearchBar query={query} setQuery={setQuery} handleSubmit={handleSubmit} />
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full">
