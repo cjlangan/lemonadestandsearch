@@ -34,6 +34,10 @@ function App() {
     }, [order, startDate, endDate]);
 
     function handleSubmit(query: string) {
+        if (query === "") {
+          return
+        }
+
         console.log("Searching for:", query);
 
         let start = ""
