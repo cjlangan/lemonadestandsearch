@@ -5,7 +5,6 @@ import SortSelect from "./components/SortSelect"
 import SearchBar from "./components/SearchBar"
 import MyDatePicker from "./components/MyDatePicker"
 import CardGrid from "./components/CardGrid"
-import ThemeToggle from "./components/ThemeToggle.tsx"
 
 
 import type { SearchResult } from "./types/SearchResult";
