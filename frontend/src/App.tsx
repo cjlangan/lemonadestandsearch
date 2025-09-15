@@ -14,8 +14,8 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const options = [
     { value: "best", label: "Best Match" },
-    { value: "asc", label: "Newest First" },
-    { value: "desc", label: "Oldest First" },
+    { value: "desc", label: "Newest First" },
+    { value: "asc", label: "Oldest First" },
 ];
 
 function App() {
